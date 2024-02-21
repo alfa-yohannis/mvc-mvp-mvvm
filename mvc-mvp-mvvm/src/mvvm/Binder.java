@@ -4,7 +4,7 @@ import javax.swing.JSpinner;
 import javax.swing.event.ChangeEvent;
 import javax.swing.event.ChangeListener;
 
-public class Binder<X> {
+public class Binder {
 
 	private Object source = null;
 

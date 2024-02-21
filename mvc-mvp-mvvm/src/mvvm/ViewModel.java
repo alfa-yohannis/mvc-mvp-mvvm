@@ -7,7 +7,10 @@ public class ViewModel {
 
 	private Model model;
 	private List<ViewModelProperty> viewModelProperties = new ArrayList<>();
+	private ViewModelProperty propertyX = new ViewModelProperty("propertyX", this);
 
+	
+	
 	public Model getModel() {
 		return model;
 	}
@@ -37,5 +40,11 @@ public class ViewModel {
 		viewModelProperty.setValue(value);
 		
 	}
+
+	public ViewModelProperty getPropertyX() {
+		return propertyX;
+	}
+
+	
 
 }

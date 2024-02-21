@@ -10,6 +10,7 @@ import javax.swing.JFrame;
 import javax.swing.JPanel;
 import javax.swing.JSpinner;
 import javax.swing.border.EmptyBorder;
+import javax.swing.SpinnerNumberModel;
 
 public class View extends JFrame {
 
@@ -20,6 +21,7 @@ public class View extends JFrame {
 	private JSpinner spinner001;
 	private JSpinner spinner003;
 	private JSpinner spinner002;
+	private JSpinner spinnerX;
 
 //	/**
 //	 * Launch the application.
@@ -66,6 +68,13 @@ public class View extends JFrame {
 		((JSpinner.DefaultEditor) spinner003.getEditor()).getTextField().setColumns(3);
 		spinner003.setFont(new Font("Dialog", Font.BOLD, 32));
 		contentPane.add(spinner003);
+		
+		spinnerX = new JSpinner();
+		spinnerX.setModel(new SpinnerNumberModel(99	, null, null, Integer.valueOf(2)));
+		((JSpinner.DefaultEditor) spinnerX.getEditor()).getTextField().setColumns(5);
+		spinnerX.setName("spinnerX");
+		spinnerX.setFont(new Font("Courier", Font.BOLD, 40));
+		contentPane.add(spinnerX);
 
 		Point centerPoint = GraphicsEnvironment.getLocalGraphicsEnvironment().getCenterPoint();
 		this.setLocation(centerPoint.x - (int) this.getSize().getWidth() / 2,
@@ -77,6 +86,7 @@ public class View extends JFrame {
 			bindList.add(new Binder(spinner001, viewModel.getViewModelProperties().get(0)));
 			bindList.add(new Binder(spinner002, viewModel.getViewModelProperties().get(1)));
 			bindList.add(new Binder(spinner003, viewModel.getViewModelProperties().get(2)));
+			new Binder(spinnerX, viewModel.getPropertyX());
 		
 	}
 

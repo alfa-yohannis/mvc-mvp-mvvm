@@ -9,7 +9,7 @@ public class MVVMApp {
 
 			ViewModel viewModel = new ViewModel();
 			viewModel.setModel(model);
-			new ViewModelProperty("Property-1", viewModel);
+			
 			viewModel.getViewModelProperties().add(new ViewModelProperty("Property-1", viewModel));
 			viewModel.getViewModelProperties().add(new ViewModelProperty("Property-2", viewModel));
 			viewModel.getViewModelProperties().add(new ViewModelProperty("Property-3", viewModel));
