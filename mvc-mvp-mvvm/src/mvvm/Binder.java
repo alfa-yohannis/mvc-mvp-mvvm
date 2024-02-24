@@ -20,7 +20,7 @@ public class Binder {
 				}
 				source = modelViewProperty;
 				spinner.setValue(modelViewProperty.getValue());
-				System.out.println(spinner.getName() + ", value:" + spinner.getValue());
+//				System.out.println(spinner.getName() + ", value:" + spinner.getValue());
 			}
 		});
 
