@@ -1,4 +1,4 @@
-package mvp;
+package mvi;
 
 import java.awt.Font;
 import java.awt.GraphicsEnvironment;
@@ -8,32 +8,39 @@ import javax.swing.JFrame;
 import javax.swing.JPanel;
 import javax.swing.JSpinner;
 import javax.swing.border.EmptyBorder;
+import javax.swing.event.ChangeEvent;
 import javax.swing.event.ChangeListener;
 
 public class View extends JFrame {
 
 	private static final long serialVersionUID = 1L;
-	
+
 	private JPanel contentPane;
+
+	public JPanel getContentPane() {
+		return contentPane;
+	}
+
 	private JSpinner spinner001;
 	private JSpinner spinner003;
 	private JSpinner spinner002;
 	private JSpinner spinner001b;
 	private JSpinner spinner002b;
 	private JSpinner spinner003b;
+	private String modelName;
 
 	/**
 	 * Create the frame.
 	 */
 	public View() {
-		setTitle("MVP: Model-View-Presenter");
+		setTitle("MVP: Model-View-Controller");
 		setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
 		setBounds(100, 100, 450, 300);
 		contentPane = new JPanel();
 		contentPane.setBorder(new EmptyBorder(5, 5, 5, 5));
 
 		setContentPane(contentPane);
-		
+
 		spinner001 = new JSpinner();
 		spinner001.setName("spinner001");
 		((JSpinner.DefaultEditor) spinner001.getEditor()).getTextField().setColumns(3);
@@ -78,12 +85,30 @@ public class View extends JFrame {
 		Point centerPoint = GraphicsEnvironment.getLocalGraphicsEnvironment().getCenterPoint();
 		this.setLocation(centerPoint.x - (int) this.getSize().getWidth() / 2,
 				centerPoint.y - (int) this.getSize().getHeight() / 2);
+
+		spinner001.addChangeListener(new JSpinnerChangeListenger());
+		spinner002.addChangeListener(new JSpinnerChangeListenger());
+		spinner003.addChangeListener(new JSpinnerChangeListenger());
+
 	}
 
-	public void setChangeListener(ChangeListener presenter) {
-		spinner001.addChangeListener(presenter);
-		spinner002.addChangeListener(presenter);
-		spinner003.addChangeListener(presenter);
+	class JSpinnerChangeListenger implements ChangeListener {
+		boolean isListening = true;
+
+		@Override
+		public void stateChanged(ChangeEvent event) {
+			JSpinner spinner = (JSpinner) event.getSource();
+			int value = (int) spinner.getValue();
+			UpdateValueIntent.handleChange(View.this.getName(), spinner.getName(), value);
+		}
+
 	}
 
+	public String getModelName() {
+		return modelName;
+	}
+
+	public void setModelName(String modelName) {
+		this.modelName = modelName;
+	}
 }

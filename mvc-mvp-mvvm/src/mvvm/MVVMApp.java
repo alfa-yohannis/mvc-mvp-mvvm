@@ -9,17 +9,19 @@ public class MVVMApp {
 
 			ViewModel viewModel = new ViewModel();
 			viewModel.setModel(model);
-			
-			viewModel.getViewModelProperties().add(new ViewModelProperty("Property-1", viewModel));
-			viewModel.getViewModelProperties().add(new ViewModelProperty("Property-2", viewModel));
-			viewModel.getViewModelProperties().add(new ViewModelProperty("Property-3", viewModel));
+
+			viewModel.getViewModelProperties().put("spinner001", new ViewModelProperty("spinner001", viewModel));
+			viewModel.getViewModelProperties().put("spinner002", new ViewModelProperty("spinner002", viewModel));
+			viewModel.getViewModelProperties().put("spinner003", new ViewModelProperty("spinner003", viewModel));
+			viewModel.getViewModelProperties().put("spinner001b", new ViewModelProperty("spinner001b", viewModel));
+			viewModel.getViewModelProperties().put("spinner002b", new ViewModelProperty("spinner002b", viewModel));
+			viewModel.getViewModelProperties().put("spinner003b", new ViewModelProperty("spinner003b", viewModel));
 
 			View view = new View();
 			view.setVisible(true);
-			
+
 			view.bind(viewModel);
-		} catch (
-		Exception e) {
+		} catch (Exception e) {
 			e.printStackTrace();
 		}
 	}

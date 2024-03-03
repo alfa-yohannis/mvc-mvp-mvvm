@@ -24,6 +24,9 @@ public class View extends JFrame {
 	private JSpinner spinner001;
 	private JSpinner spinner003;
 	private JSpinner spinner002;
+	private JSpinner spinner001b;
+	private JSpinner spinner002b;
+	private JSpinner spinner003b;
 	private String modelName;
 
 	/**
@@ -43,18 +46,41 @@ public class View extends JFrame {
 		((JSpinner.DefaultEditor) spinner001.getEditor()).getTextField().setColumns(3);
 		spinner001.setFont(new Font("Dialog", Font.BOLD, 32));
 		contentPane.add(spinner001);
-
+		
+		spinner001b = new JSpinner();
+		spinner001b.setEnabled(false);
+		spinner001b.setName("spinner001b");
+		((JSpinner.DefaultEditor) spinner001b.getEditor()).getTextField().setColumns(3);
+		spinner001b.setFont(new Font("Dialog", Font.BOLD, 32));
+		contentPane.add(spinner001b);
+		
 		spinner002 = new JSpinner();
 		spinner002.setName("spinner002");
 		((JSpinner.DefaultEditor) spinner002.getEditor()).getTextField().setColumns(3);
 		spinner002.setFont(new Font("Dialog", Font.BOLD, 32));
 		contentPane.add(spinner002);
+		
 
+		spinner002b = new JSpinner();
+		spinner002b.setEnabled(false);
+		spinner002b.setName("spinner002b");
+		((JSpinner.DefaultEditor) spinner002b.getEditor()).getTextField().setColumns(3);
+		spinner002b.setFont(new Font("Dialog", Font.BOLD, 32));
+		contentPane.add(spinner002b);
+		
 		spinner003 = new JSpinner();
 		spinner003.setName("spinner003");
 		((JSpinner.DefaultEditor) spinner003.getEditor()).getTextField().setColumns(3);
 		spinner003.setFont(new Font("Dialog", Font.BOLD, 32));
 		contentPane.add(spinner003);
+		
+
+		spinner003b = new JSpinner();
+		spinner003b.setEnabled(false);
+		spinner003b.setName("spinner003b");
+		((JSpinner.DefaultEditor) spinner003b.getEditor()).getTextField().setColumns(3);
+		spinner003b.setFont(new Font("Dialog", Font.BOLD, 32));
+		contentPane.add(spinner003b);
 
 		Point centerPoint = GraphicsEnvironment.getLocalGraphicsEnvironment().getCenterPoint();
 		this.setLocation(centerPoint.x - (int) this.getSize().getWidth() / 2,
@@ -71,16 +97,9 @@ public class View extends JFrame {
 
 		@Override
 		public void stateChanged(ChangeEvent event) {
-			if (isListening == false) {
-				isListening = true;
-				return;
-			}
 			JSpinner spinner = (JSpinner) event.getSource();
 			int value = (int) spinner.getValue();
-			isListening = false;
 			Controller.handleChange(View.this.getName(), spinner.getName(), value);
-			
-
 		}
 
 	}

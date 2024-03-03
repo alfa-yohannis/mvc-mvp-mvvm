@@ -32,7 +32,7 @@ public class Model {
 		return values.put(key, value);
 	}
 
-	public int getValue(String key) {
+	public Integer getValue(String key) {
 		return values.get(key);
 	}
 }
