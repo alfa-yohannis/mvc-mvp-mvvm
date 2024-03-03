@@ -1,18 +1,14 @@
 package mvi;
 
-import java.awt.Component;
 import java.util.HashMap;
 import java.util.Map;
 
-import javax.swing.JSpinner;
-import javax.swing.event.ChangeEvent;
-import javax.swing.event.ChangeListener;
-
-public class Model implements ChangeListener {
+public class Model {
 
 	private String name = null;
 	private Map<String, Integer> values = new HashMap<>();
 	private View view = null;
+	private ViewStateUpdateListener viewStateUpdateListener;
 
 	public Model(String name) {
 		this.name = name;
@@ -36,15 +32,6 @@ public class Model implements ChangeListener {
 
 	public Integer setValue(String key, int value) {
 		Integer oldValue = values.put(key, value);
-
-		String targetComponentName = key + "b";
-		for (Component component : view.getContentPane().getComponents()) {
-			if (targetComponentName.equals(component.getName())) {
-				JSpinner spinner = (JSpinner) component;
-				spinner.setValue(value + 1);
-				break;
-			}
-		}
 		return oldValue;
 	}
 
@@ -61,9 +48,21 @@ public class Model implements ChangeListener {
 		this.view.setModelName(this.getName());
 	}
 
-	@Override
-	public void stateChanged(ChangeEvent arg0) {
-		// TODO Auto-generated method stub
-		
+	public void handleIntent(Intent intent) {
+		if (intent instanceof UpdateValueIntent) {
+			UpdateValueIntent updateValueIntent = (UpdateValueIntent) intent;
+			this.setValue(updateValueIntent.getSourceName(), updateValueIntent.getValue());
+			int value = this.getValue(updateValueIntent.getSourceName()) + 1;
+			updateSpinnerState(updateValueIntent.getTargetName(), value);
+		}
 	}
+
+	private void updateSpinnerState(String targetName, int value) {
+		viewStateUpdateListener.onViewStateUpdate(targetName, value);
+	}
+
+	public void setViewStateUpdateListener(ViewStateUpdateListener viewStateUpdateListener) {
+		this.viewStateUpdateListener = viewStateUpdateListener;
+	}
+
 }

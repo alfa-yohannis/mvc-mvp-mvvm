@@ -6,12 +6,9 @@ public class MVIApp {
 
 		try {
 			Model model = new Model("001");
-			View view = new View();
+			View view = new View(model);
 			view.setName("001");
 			view.setVisible(true);
-			model.setView(view);
-			
-			
 			
 		} catch (Exception e) {
 			e.printStackTrace();

@@ -1,5 +1,6 @@
 package mvi;
 
+import java.awt.Component;
 import java.awt.Font;
 import java.awt.GraphicsEnvironment;
 import java.awt.Point;
@@ -14,6 +15,8 @@ import javax.swing.event.ChangeListener;
 public class View extends JFrame {
 
 	private static final long serialVersionUID = 1L;
+
+	private Model model;
 
 	private JPanel contentPane;
 
@@ -31,8 +34,11 @@ public class View extends JFrame {
 
 	/**
 	 * Create the frame.
+	 * @param model 
 	 */
-	public View() {
+	public View(Model model) {
+		this.model = model;
+		
 		setTitle("MVP: Model-View-Controller");
 		setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
 		setBounds(100, 100, 450, 300);
@@ -46,20 +52,19 @@ public class View extends JFrame {
 		((JSpinner.DefaultEditor) spinner001.getEditor()).getTextField().setColumns(3);
 		spinner001.setFont(new Font("Dialog", Font.BOLD, 32));
 		contentPane.add(spinner001);
-		
+
 		spinner001b = new JSpinner();
 		spinner001b.setEnabled(false);
 		spinner001b.setName("spinner001b");
 		((JSpinner.DefaultEditor) spinner001b.getEditor()).getTextField().setColumns(3);
 		spinner001b.setFont(new Font("Dialog", Font.BOLD, 32));
 		contentPane.add(spinner001b);
-		
+
 		spinner002 = new JSpinner();
 		spinner002.setName("spinner002");
 		((JSpinner.DefaultEditor) spinner002.getEditor()).getTextField().setColumns(3);
 		spinner002.setFont(new Font("Dialog", Font.BOLD, 32));
 		contentPane.add(spinner002);
-		
 
 		spinner002b = new JSpinner();
 		spinner002b.setEnabled(false);
@@ -67,13 +72,12 @@ public class View extends JFrame {
 		((JSpinner.DefaultEditor) spinner002b.getEditor()).getTextField().setColumns(3);
 		spinner002b.setFont(new Font("Dialog", Font.BOLD, 32));
 		contentPane.add(spinner002b);
-		
+
 		spinner003 = new JSpinner();
 		spinner003.setName("spinner003");
 		((JSpinner.DefaultEditor) spinner003.getEditor()).getTextField().setColumns(3);
 		spinner003.setFont(new Font("Dialog", Font.BOLD, 32));
 		contentPane.add(spinner003);
-		
 
 		spinner003b = new JSpinner();
 		spinner003b.setEnabled(false);
@@ -86,21 +90,33 @@ public class View extends JFrame {
 		this.setLocation(centerPoint.x - (int) this.getSize().getWidth() / 2,
 				centerPoint.y - (int) this.getSize().getHeight() / 2);
 
+		class JSpinnerChangeListenger implements ChangeListener {
+			@Override
+			public void stateChanged(ChangeEvent event) {
+				JSpinner spinner = (JSpinner) event.getSource();
+				int value = (int) spinner.getValue();
+				UpdateValueIntent intent = new UpdateValueIntent(spinner.getName(), spinner.getName() + "b", value);
+				View.this.model.handleIntent(intent);
+			}
+
+		}
+
 		spinner001.addChangeListener(new JSpinnerChangeListenger());
 		spinner002.addChangeListener(new JSpinnerChangeListenger());
 		spinner003.addChangeListener(new JSpinnerChangeListenger());
 
-	}
-
-	class JSpinnerChangeListenger implements ChangeListener {
-		boolean isListening = true;
-
-		@Override
-		public void stateChanged(ChangeEvent event) {
-			JSpinner spinner = (JSpinner) event.getSource();
-			int value = (int) spinner.getValue();
-			UpdateValueIntent.handleChange(View.this.getName(), spinner.getName(), value);
-		}
+		this.model.setViewStateUpdateListener(new ViewStateUpdateListener() {
+			@Override
+			public void onViewStateUpdate(String targetName, Object value) {
+				for (Component component : View.this.getContentPane().getComponents()) {
+					if (targetName.equals(component.getName())) {
+						JSpinner spinner = (JSpinner) component;
+						spinner.setValue(value);
+						break;
+					}
+				}
+			}
+		});
 
 	}
 
@@ -110,5 +126,13 @@ public class View extends JFrame {
 
 	public void setModelName(String modelName) {
 		this.modelName = modelName;
+	}
+
+	public Model getModel() {
+		return model;
+	}
+
+	public void setModel(Model model) {
+		this.model = model;
 	}
 }
