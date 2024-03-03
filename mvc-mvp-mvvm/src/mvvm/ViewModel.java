@@ -1,16 +1,13 @@
 package mvvm;
 
-import java.util.ArrayList;
-import java.util.List;
+import java.util.HashMap;
+import java.util.Map;
 
 public class ViewModel {
 
 	private Model model;
-	private List<ViewModelProperty> viewModelProperties = new ArrayList<>();
-	private ViewModelProperty propertyX = new ViewModelProperty("propertyX", this);
+	private Map<String, ViewModelProperty> viewModelProperties = new HashMap<>();
 
-	
-	
 	public Model getModel() {
 		return model;
 	}
@@ -23,28 +20,21 @@ public class ViewModel {
 		this.model = model;
 	}
 
-	public List<ViewModelProperty> getViewModelProperties() {
+	public Map<String, ViewModelProperty> getViewModelProperties() {
 		return viewModelProperties;
 	}
 
-	public void setViewModelProperties(List<ViewModelProperty> viewModelProperties) {
+	public void setViewModelProperties(Map<String, ViewModelProperty> viewModelProperties) {
 		this.viewModelProperties = viewModelProperties;
 	}
 
 	public void onPropertyChanged(ViewModelProperty viewModelProperty) {
-		System.out.println(viewModelProperty.getName() + ", value:" + viewModelProperty.getValue());
-		
+//		System.out.println(viewModelProperty.getName() + ", value:" + viewModelProperty.getValue());
 		int value = Integer.valueOf(viewModelProperty.getValue().toString());
 		this.model.setValue(viewModelProperty.getName(), value);
 		value = this.model.getValue(viewModelProperty.getName()) + 1;
-		viewModelProperty.setValue(value);
-		
+		ViewModelProperty targetProperty = viewModelProperties.get(viewModelProperty.getName() + "b");
+		targetProperty.setValue(value);
+
 	}
-
-	public ViewModelProperty getPropertyX() {
-		return propertyX;
-	}
-
-	
-
 }

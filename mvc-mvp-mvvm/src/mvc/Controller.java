@@ -8,7 +8,7 @@ public class Controller {
 	private static Map<String, Model> models = new HashMap<>();
 
 	public static void handleChange(String modelName, String spinnerName, int value) {
-		System.out.println(spinnerName + ", value:" + value);
+//		System.out.println(spinnerName + ", value:" + value);
 		Model model = models.get(modelName);
 		model.setValue(spinnerName, value);
 	}

@@ -1,12 +1,14 @@
-package mvc;
+package mvi;
 
 import java.awt.Component;
 import java.util.HashMap;
 import java.util.Map;
 
 import javax.swing.JSpinner;
+import javax.swing.event.ChangeEvent;
+import javax.swing.event.ChangeListener;
 
-public class Model {
+public class Model implements ChangeListener {
 
 	private String name = null;
 	private Map<String, Integer> values = new HashMap<>();
@@ -57,5 +59,11 @@ public class Model {
 	public void setView(View view) {
 		this.view = view;
 		this.view.setModelName(this.getName());
+	}
+
+	@Override
+	public void stateChanged(ChangeEvent arg0) {
+		// TODO Auto-generated method stub
+		
 	}
 }
