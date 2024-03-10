@@ -8,7 +8,6 @@ public class Model {
 	private String name = null;
 	private Map<String, Integer> values = new HashMap<>();
 	private View view = null;
-	private ViewStateUpdateListener viewStateUpdateListener;
 
 	public Model(String name) {
 		this.name = name;
@@ -58,11 +57,6 @@ public class Model {
 	}
 
 	private void updateSpinnerState(String targetName, int value) {
-		viewStateUpdateListener.onViewStateUpdate(targetName, value);
+		view.updateViewState(targetName, value);
 	}
-
-	public void setViewStateUpdateListener(ViewStateUpdateListener viewStateUpdateListener) {
-		this.viewStateUpdateListener = viewStateUpdateListener;
-	}
-
 }

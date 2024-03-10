@@ -31,7 +31,9 @@ public class ViewModel {
 	public void onPropertyChanged(ViewModelProperty viewModelProperty) {
 //		System.out.println(viewModelProperty.getName() + ", value:" + viewModelProperty.getValue());
 		int value = Integer.valueOf(viewModelProperty.getValue().toString());
+		// save value to model
 		this.model.setValue(viewModelProperty.getName(), value);
+		// get value from model
 		value = this.model.getValue(viewModelProperty.getName()) + 1;
 		ViewModelProperty targetProperty = viewModelProperties.get(viewModelProperty.getName() + "b");
 		targetProperty.setValue(value);

@@ -37,7 +37,11 @@ public class Presenter implements ChangeListener {
 		JSpinner spinner = (JSpinner) event.getSource();
 		System.out.println(spinner.getName() + ", value:" + spinner.getValue());
 		int value = Integer.valueOf(spinner.getValue().toString());
+		
+		//save the value to model
 		this.model.setValue(spinner.getName(), value);
+		
+		// get the value from model
 		value = this.model.getValue(spinner.getName()) + 1;
 		System.out.println(value);
 

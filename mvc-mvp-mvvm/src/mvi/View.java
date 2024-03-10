@@ -1,9 +1,11 @@
 package mvi;
 
 import java.awt.Component;
+import java.awt.Dimension;
 import java.awt.Font;
 import java.awt.GraphicsEnvironment;
 import java.awt.Point;
+import java.awt.Toolkit;
 
 import javax.swing.JFrame;
 import javax.swing.JPanel;
@@ -34,14 +36,16 @@ public class View extends JFrame {
 
 	/**
 	 * Create the frame.
-	 * @param model 
+	 * 
+	 * @param model
 	 */
 	public View(Model model) {
 		this.model = model;
-		
-		setTitle("MVP: Model-View-Controller");
+		this.model.setView(this);
+
+		setTitle("MVP: Model-View-Intent");
 		setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
-		setBounds(100, 100, 450, 300);
+		setBounds(100, 100, 800, 600);
 		contentPane = new JPanel();
 		contentPane.setBorder(new EmptyBorder(5, 5, 5, 5));
 
@@ -86,37 +90,37 @@ public class View extends JFrame {
 		spinner003b.setFont(new Font("Dialog", Font.BOLD, 32));
 		contentPane.add(spinner003b);
 
+//		Dimension screenSize = Toolkit.getDefaultToolkit().getScreenSize();
+//	    this.setSize(screenSize.width, screenSize.height);
+	    
 		Point centerPoint = GraphicsEnvironment.getLocalGraphicsEnvironment().getCenterPoint();
 		this.setLocation(centerPoint.x - (int) this.getSize().getWidth() / 2,
 				centerPoint.y - (int) this.getSize().getHeight() / 2);
-
-		class JSpinnerChangeListenger implements ChangeListener {
-			@Override
-			public void stateChanged(ChangeEvent event) {
-				JSpinner spinner = (JSpinner) event.getSource();
-				int value = (int) spinner.getValue();
-				UpdateValueIntent intent = new UpdateValueIntent(spinner.getName(), spinner.getName() + "b", value);
-				View.this.model.handleIntent(intent);
-			}
-
-		}
-
+		
 		spinner001.addChangeListener(new JSpinnerChangeListenger());
 		spinner002.addChangeListener(new JSpinnerChangeListenger());
 		spinner003.addChangeListener(new JSpinnerChangeListenger());
 
-		this.model.setViewStateUpdateListener(new ViewStateUpdateListener() {
-			@Override
-			public void onViewStateUpdate(String targetName, Object value) {
-				for (Component component : View.this.getContentPane().getComponents()) {
-					if (targetName.equals(component.getName())) {
-						JSpinner spinner = (JSpinner) component;
-						spinner.setValue(value);
-						break;
-					}
-				}
+	}
+
+	public void updateViewState(String targetName, Object value) {
+		for (Component component : View.this.getContentPane().getComponents()) {
+			if (targetName.equals(component.getName())) {
+				JSpinner spinner = (JSpinner) component;
+				spinner.setValue(value);
+				break;
 			}
-		});
+		}
+	}
+
+	public class JSpinnerChangeListenger implements ChangeListener {
+		@Override
+		public void stateChanged(ChangeEvent event) {
+			JSpinner spinner = (JSpinner) event.getSource();
+			int value = (int) spinner.getValue();
+			UpdateValueIntent intent = new UpdateValueIntent(spinner.getName(), spinner.getName() + "b", value);
+			View.this.model.handleIntent(intent);
+		}
 
 	}
 
