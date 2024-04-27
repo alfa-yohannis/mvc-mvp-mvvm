@@ -29,6 +29,8 @@ public class TestMVIApp {
 
 	public static void main(String[] args) throws IOException {
 
+		long startTime = System.currentTimeMillis();
+
 		// delete the target data file if the file exists
 		Files.deleteIfExists(Path.of(DATA_FILE));
 
@@ -43,6 +45,7 @@ public class TestMVIApp {
 			performMeasurement(i);
 		}
 
+		System.out.println("Total Time: " + String.valueOf((System.currentTimeMillis() - startTime) / 60000) + " minutes");
 	}
 
 	/***
