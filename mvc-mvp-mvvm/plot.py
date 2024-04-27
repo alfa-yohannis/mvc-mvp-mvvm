@@ -38,15 +38,15 @@ for category_column in categories_columns:
             median = np.median(grouped_data[category])
             q1 = np.percentile(grouped_data[category], 25)
             q3 = np.percentile(grouped_data[category], 75)
-            # plt.text(i + 1, q1 - 0.01 * np.ptp(plt.ylim()), f'Q1={int(q1)}', ha='center', va='top')
-            # plt.text(i + 1, median + 0.01 * np.ptp(plt.ylim()), f'Median={int(median)}', ha='left', va='top')
-            # plt.text(i + 1, q3 + 0.01 * np.ptp(plt.ylim()), f'Q3={int(q3)}', ha='center', va='bottom')
+            plt.text(i + 1, q1 - 0.03 * np.ptp(plt.ylim()), f'Q1={int(q1)}', ha='center', va='top')
+            plt.text(i + 1, median - 0.01 * np.ptp(plt.ylim()), f'Median={int(median)}', ha='center', va='top')
+            plt.text(i + 1, q3 + 0.03 * np.ptp(plt.ylim()), f'Q3={int(q3)}', ha='center', va='bottom')
 
         # Add average annotation with an offset
         for i, category in enumerate(grouped_data.keys()):
             avg = np.mean(grouped_data[category])
             plt.scatter(i + 1, avg, marker='x', color='black', zorder=5)  # Add 'X' symbol for average
-            # plt.text(i + 1, avg - 0.01 * np.ptp(plt.ylim()), f'Avg={int(avg)}', ha='right', va='bottom')
+            plt.text(i + 1, avg + 0.01 * np.ptp(plt.ylim()), f'Avg={int(avg)}', ha='center', va='bottom')
 
         # Save plot to a PDF file
         plt.savefig(f'plot_{category_column}_{value_column}.pdf', bbox_inches='tight', pad_inches=0.2, dpi=300, format='pdf', transparent=True)
