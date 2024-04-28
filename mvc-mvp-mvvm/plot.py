@@ -3,7 +3,7 @@ import matplotlib.pyplot as plt
 import numpy as np
 
 # Read data from CSV file
-data = pd.read_csv('clean_data.csv')
+data = pd.read_csv('data.csv')
 
 # Define the categories and values columns
 categories_columns = ['view_total', 'spin_total']
@@ -50,4 +50,6 @@ for category_column in categories_columns:
 
         # Save plot to a PDF file
         plt.savefig(f'plot_{category_column}_{value_column}.pdf', bbox_inches='tight', pad_inches=0.2, dpi=300, format='pdf', transparent=True)
-        plt.show()
+        # plt.show()
+
+print("Done!")

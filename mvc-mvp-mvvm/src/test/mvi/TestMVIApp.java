@@ -40,12 +40,13 @@ public class TestMVIApp {
 				StandardCharsets.UTF_8, StandardOpenOption.CREATE);
 		System.out.println("iter,view_total,view_num,spin_total,spin_num,time,memory");
 
-		// perform performance measurement 15 times
+		// perform performance measurement 12 times
 		for (int i = 1; i <= 12; i++) {
 			performMeasurement(i);
 		}
 
-		System.out.println("Total Time: " + String.valueOf((System.currentTimeMillis() - startTime) / 60000) + " minutes");
+		System.out.println(
+				"Total Time: " + String.valueOf((System.currentTimeMillis() - startTime) / 60000) + " minutes");
 	}
 
 	/***
@@ -55,8 +56,8 @@ public class TestMVIApp {
 	 */
 	private static void performMeasurement(int iteration) {
 
-		// create number of views array. This one starts from 1 view to 101 views.
-		// example: [1, 2, ..., 101]
+		// create number of views array. In this experiment, it consists of four
+		// categories: 1, 25, 50, 75, 100.
 		List<Integer> viewTotalList = new ArrayList<>();
 		viewTotalList.add(1);
 		for (int multiplier1 = 1; multiplier1 <= DIVIDER; multiplier1++) {
@@ -66,6 +67,8 @@ public class TestMVIApp {
 
 		for (int viewTotal : viewTotalList) {
 
+			// create number of spinner pairs array. In this experiment, it consists of four
+			// categories: 1, 25, 50, 75, 100.
 			List<Integer> spinnerTotalList = new ArrayList<>();
 			spinnerTotalList.add(1);
 			for (int multiplier2 = 1; multiplier2 <= DIVIDER; multiplier2++) {
@@ -82,6 +85,9 @@ public class TestMVIApp {
 				viewList.clear();
 				System.gc();
 
+				Map<View, Map<JSpinner, JSpinner>> viewToSpinnerPairMap = new HashMap<View, Map<JSpinner, JSpinner>>();
+				Map<View, List<Long>> viewToStartTimeRecordsMap = new HashMap<View, List<Long>>();
+
 				for (int viewNumber = 1; viewNumber <= viewTotal; viewNumber++) {
 					// create the view and the model
 					Model model = new Model(String.valueOf(((NUMBER_OF_VIEWS * 10) + viewNumber)));
@@ -94,8 +100,13 @@ public class TestMVIApp {
 
 					// create the input and output spinners
 					Map<JSpinner, JSpinner> spinnerPairs = new HashMap<JSpinner, JSpinner>();
+					viewToSpinnerPairMap.put(view, spinnerPairs);
 
-					long[] startTimeRecords = new long[spinnerTotal];
+					List<Long> startTimeRecords = new ArrayList<>();
+					for (int a = 0; a < spinnerTotal; a++) {
+						startTimeRecords.add((long) 0);
+					}
+					viewToStartTimeRecordsMap.put(view, startTimeRecords);
 
 					// create the input and output spinners.
 					// the number of spinners is as many as the order of the view.
@@ -130,7 +141,7 @@ public class TestMVIApp {
 								int indexAlreadyIncreasedByTwo = (Integer) outputSpinner.getValue();
 								int originalIndex = indexAlreadyIncreasedByTwo - 2;
 								// get the start time
-								long startTime = startTimeRecords[originalIndex];
+								long startTime = startTimeRecords.get(originalIndex);
 								// calculate the delta time
 								long delta = System.nanoTime() - startTime;
 								// calculate the in-usage memory
@@ -148,8 +159,9 @@ public class TestMVIApp {
 									// get the output string
 									String outputString = String.join(",", output) + System.lineSeparator();
 									// write the output string to the target file
-									Files.writeString(Path.of(OUTPUT_FILE), outputString, StandardCharsets.UTF_8,
-											StandardOpenOption.APPEND);
+									if (viewTotal > 1 && spinnerTotal > 1)
+										Files.writeString(Path.of(OUTPUT_FILE), outputString, StandardCharsets.UTF_8,
+												StandardOpenOption.APPEND);
 									// print the output string to the screen
 									System.out.print(outputString);
 
@@ -163,18 +175,26 @@ public class TestMVIApp {
 					}
 
 					view.setVisible(true);
+				}
+
+				for (Entry<View, Map<JSpinner, JSpinner>> viewToSpinnerPair : viewToSpinnerPairMap.entrySet()) {
+
+					Map<JSpinner, JSpinner> spinnerPairs = viewToSpinnerPair.getValue();
+					List<Long> startTimeRecords = viewToStartTimeRecordsMap.get(viewToSpinnerPair.getKey());
 
 					// iterate through every input spinner and set its value
 					int originalIndex = 0;
 					for (Entry<JSpinner, JSpinner> pair : spinnerPairs.entrySet()) {
 						JSpinner inputSpinner = pair.getKey();
-						startTimeRecords[originalIndex] = System.nanoTime();
+						startTimeRecords.set(originalIndex, System.nanoTime());
 						// update the spinner's value based on the index value and is increased by one
 						inputSpinner.setValue(originalIndex + 1);
 						originalIndex++;
 					}
-
 				}
+
+				viewToSpinnerPairMap.clear();
+				viewToStartTimeRecordsMap.clear();
 				viewList.forEach(v -> v.dispose());
 			}
 		}
