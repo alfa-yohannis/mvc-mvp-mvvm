@@ -22,7 +22,7 @@ import mvi.View;
 
 public class TestMVIApp {
 
-	private static final String DATA_FILE = "data.csv";
+	private static final String OUTPUT_FILE = "data.csv";
 	static final int NUMBER_OF_VIEWS = 100;
 	static final int NUMBER_OF_SPINNER = NUMBER_OF_VIEWS;
 	static final int DIVIDER = 4;
@@ -32,10 +32,10 @@ public class TestMVIApp {
 		long startTime = System.currentTimeMillis();
 
 		// delete the target data file if the file exists
-		Files.deleteIfExists(Path.of(DATA_FILE));
+		Files.deleteIfExists(Path.of(OUTPUT_FILE));
 
 		// create a new target data file
-		Files.writeString(Path.of(DATA_FILE),
+		Files.writeString(Path.of(OUTPUT_FILE),
 				"iter,view_total,view_num,spin_total,spin_num,time,memory" + System.lineSeparator(),
 				StandardCharsets.UTF_8, StandardOpenOption.CREATE);
 		System.out.println("iter,view_total,view_num,spin_total,spin_num,time,memory");
@@ -148,7 +148,7 @@ public class TestMVIApp {
 									// get the output string
 									String outputString = String.join(",", output) + System.lineSeparator();
 									// write the output string to the target file
-									Files.writeString(Path.of(DATA_FILE), outputString, StandardCharsets.UTF_8,
+									Files.writeString(Path.of(OUTPUT_FILE), outputString, StandardCharsets.UTF_8,
 											StandardOpenOption.APPEND);
 									// print the output string to the screen
 									System.out.print(outputString);
