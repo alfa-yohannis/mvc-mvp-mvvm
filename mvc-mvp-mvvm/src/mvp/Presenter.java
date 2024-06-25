@@ -35,7 +35,7 @@ public class Presenter implements ChangeListener {
 	@Override
 	public void stateChanged(ChangeEvent event) {
 		JSpinner spinner = (JSpinner) event.getSource();
-		System.out.println(spinner.getName() + ", value:" + spinner.getValue());
+//		System.out.println(spinner.getName() + ", value:" + spinner.getValue());
 		int value = Integer.valueOf(spinner.getValue().toString());
 		
 		//save the value to model
@@ -43,7 +43,7 @@ public class Presenter implements ChangeListener {
 		
 		// get the value from model
 		value = this.model.getValue(spinner.getName()) + 1;
-		System.out.println(value);
+//		System.out.println(value);
 
 		String targetComponentName = spinner.getName() + "b";
 		for (Component component : this.getView().getContentPane().getComponents()) {

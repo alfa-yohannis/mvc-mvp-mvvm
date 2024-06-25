@@ -22,7 +22,7 @@ import mvi.View;
 
 public class TestMVIApp {
 
-	private static final String OUTPUT_FILE = "data.csv";
+	private static final String OUTPUT_FILE = "data-mvi.csv";
 	static final int NUMBER_OF_VIEWS = 100;
 	static final int NUMBER_OF_SPINNER = NUMBER_OF_VIEWS;
 	static final int DIVIDER = 4;

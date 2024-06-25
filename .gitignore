@@ -26,3 +26,4 @@ replay_pid*
 *.csv
 *.xlsx
 /mvc-mvp-mvvm/*.pdf
+/mvc-mvp-mvvm/*.png
